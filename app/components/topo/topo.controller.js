@@ -18,10 +18,10 @@ angular.module('bciDashboard')
                 col: 11
             },
             offset: {
-                top: 5,
-                left: 5
+                top: 20,
+                left: 20
             },
-            zoom: 20
+            zoom: 40
         };
 
         $ctrl.getClass = function(index){
@@ -42,24 +42,11 @@ angular.module('bciDashboard')
             colorData = data.data.map(function(pixel) {
                 return getColor(pixel,data.data);
             });
-            //console.log(colorGrid)
-
-
-
-
-
-
-            //$timeout(function () {
-            //    $ctrl.grid = data.data;
-            //
-            //});
         });
 
         $ctrl.$onDestroy = function () {
             socket.removeListener($ctrl.eventName);
         };
-
-
 
         ////////////////////////////////////////////////
         // PHASER STUFF ////////////////////////////////
@@ -76,18 +63,25 @@ angular.module('bciDashboard')
             plot.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
             plot.scale.pageAlignHorizontally = true;
             plot.scale.pageAlignVertically = true;
-            plot.stage.backgroundColor = '#eee';
-            //util.load.image('electrode', 'components/impedance/img/electrode.png');
-            //util.load.image('electrodeOutline', 'components/impedance/img/electrodeOutline.png');
-            //util.load.image('head', 'components/impedance/img/head.png');
-            //util.load.image('noElectrode', 'components/impedance/img/noElectrode.png');
-
+            plot.stage.backgroundColor = '#333333';
         }
         function create() {
             plot.physics.startSystem(Phaser.Physics.ARCADE); // Start the 2D Arcade Physics util Engine
 
             // create the grid
             createTopoGrid();
+
+            //	A mask is a Graphics object
+            // var mask = plot.add.graphics(100, 100);
+            //
+            // //	Shapes drawn to the Graphics object must be filled.
+            // mask.beginFill(0xffffff);
+            //
+            // //	Here we'll draw a circle
+            // mask.drawCircle(100, 100, 100);
+            //
+            // //	And apply it to the Sprite
+            // topoGrid.mask = mask;
 
             //textStyle = { font: '18px Arial', fill: '#000000'};
 
@@ -103,36 +97,38 @@ angular.module('bciDashboard')
 
         //var taco = true;
         function update() {
-
             if (colorData) {
-                //var d = new Date();
-                //console.log(d.getTime());
-
                 topo.clear();
                 var index = 0;
-                for (var r = 0; r < blocksInfo.count.row; r++) {
-                    for (var c = 0; c < blocksInfo.count.col; c++) {
+                for (var c = 0; c < blocksInfo.count.col; c++) {
+                    for (var r = 0; r < blocksInfo.count.row; r++) {
                         topo.rect(r * blocksInfo.zoom, c * blocksInfo.zoom, blocksInfo.zoom, blocksInfo.zoom, colorData[index] );
                         index++;
                     }
                 }
             }
 
-        }
-
-
-
+        };
 
         function createTopoGrid () {
-            plot.create.grid('topoGrid', blocksInfo.count.col * blocksInfo.zoom, blocksInfo.count.row * blocksInfo.zoom, blocksInfo.zoom, blocksInfo.zoom, 'rgba(0,191,243,0.8)');
+            plot.create.grid('topoGrid', blocksInfo.count.col * blocksInfo.zoom, blocksInfo.count.row * blocksInfo.zoom, blocksInfo.zoom, blocksInfo.zoom, 'rgba(255,255,255,0.0)');
             topo = plot.make.bitmapData(11 * blocksInfo.zoom, 11 * blocksInfo.zoom);
-
             topoSprite = topo.addToWorld(blocksInfo.offset.left, blocksInfo.offset.top);
             topoGrid = plot.add.sprite(blocksInfo.offset.left,blocksInfo.offset.top, 'topoGrid');
-        }
 
+            // var blurX = plot.add.filter('BlurX');
+            // var blurY = plot.add.filter('BlurY');
+            //
+            // topo.filters = [blurX, blurY];
 
-
-
+            mask = plot.add.graphics(150, 150);
+            mask.beginFill(0xffffff);
+            //
+            // //	Here we'll draw a circle
+            mask.drawCircle(75, 75, 400);
+            //
+            // //	And apply it to the Sprite
+            topoSprite.mask = mask;
+        };
 
 });
