@@ -34,7 +34,7 @@ angular.module('bciDashboard')
                 });
 
                 socket.on(scope.eventName, function (data) {
-                    console.log(data.data);
+                    //console.log(data.data);
                     channels.forEach(function (channel, i) {
                         channels[i].append(new Date().getTime(), data.data[i][0]);
                     });
