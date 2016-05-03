@@ -25,6 +25,7 @@
         <script src="components/beta/beta.js"></script>
         <script src="components/theta/theta.js"></script>
         <script src="components/topo/topo.js"></script>
+        <script src="components/global-power/global-power.js"></script>
 
     </head>
     <body>
@@ -39,6 +40,7 @@
                 <button ng-click="mode = 'frequencyRadar'">Frequency Radar</button>
                 <button ng-click="mode = 'filtered'">Frequency Bands</button>
                 <button ng-click="mode = 'topo'">Topo</button>
+                <button ng-click="mode = 'globalPower'">Global Power</button>
             </nav>
 
             <section class="row" ng-if="mode == 'timeSeries'">
@@ -65,6 +67,10 @@
 
             <section class="row" ng-if="mode == 'topo'">
                 <bci-topo event-name="bci:topo"  class="block block-50"></bci-topo>
+            </section>
+
+            <section class="row" ng-if="mode == 'globalPower'">
+                <bci-global-power event-name="bci:power"  class="block block-50"></bci-global-power>
             </section>
 
         </main>

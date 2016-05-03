@@ -83,6 +83,15 @@ timeSeries = timeSeries.map(function () {
     }); // / timeSeriesRate
 });
 
+
+var spectrumsByBand = [];
+var bands = {
+      delta : [1, 3],
+      theta : [4, 8],
+      alpha : [9, 12],
+      beta : [13, 30]
+};
+
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
 // max of the grid and z is the number of points
 var grid_params = [0,10,11];
@@ -91,11 +100,29 @@ var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
 
 
+// parameters for the global power plot
+var globalPowerNumber = 0;
+var globalPowerSeries = 0;
+var globalPowerWindow = 300;
+var globalPowerRate = 250 // 250 samples every 4ms equals 1 second
+var meanPowerByBand = {
+  delta: [],
+  theta: [],
+  alpha: [],
+  beta: []
+};
+var globalPower = {
+  delta: new Array(globalPowerWindow).fill(0),
+  theta: new Array(globalPowerWindow).fill(0),
+  alpha: new Array(globalPowerWindow).fill(0),
+  beta: new Array(globalPowerWindow).fill(0)
+};
+
 function onSample (sample) {
 
     sampleNumber++;
 
-    console.log('sample', sample);
+    // console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
@@ -118,16 +145,9 @@ function onSample (sample) {
                 return Math.ceil(index * (sampleRate / bins));
             });
 
-        var spectrumsByBand = [];
-        var bands = {
-              delta : [1, 3],
-              theta : [4, 8],
-              alpha : [9, 12],
-              beta : [13, 30]
-        };
-
         for(band in bands){
             spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
+            meanPowerByBand[band].push(jStat.mean(spectrumsByBand[band].spectrums[0]))
         }
 
         // Skip every 4, add unit
@@ -189,6 +209,29 @@ function onSample (sample) {
 
         seriesNumber = 0;
     }
+
+
+    globalPowerNumber++
+
+    // Global Power Plot
+    if (globalPowerNumber === globalPowerRate) {
+
+      for (band in meanPowerByBand) {
+        globalPower[band].push(jStat.mean(meanPowerByBand[band]))
+        globalPower[band].shift()
+      }
+
+      io.emit('bci:power', {
+          data: globalPower
+      });
+
+      console.log("emitting")
+
+      globalPowerNumber = 0;
+
+    };
+
+
 
 }
 
