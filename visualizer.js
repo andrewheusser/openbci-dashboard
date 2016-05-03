@@ -225,8 +225,6 @@ function onSample (sample) {
           data: globalPower
       });
 
-      console.log("emitting")
-
       globalPowerNumber = 0;
 
     };
