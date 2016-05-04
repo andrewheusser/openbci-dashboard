@@ -7,8 +7,7 @@
     function bciGlobalPower() {
 
         var timeSeries = new SmoothieChart({
-            millisPerLine: 3000,
-            interpolation: 'linear',
+            millisPerPixel: 100,
             grid: {
                 fillStyle: '#333333',
                 strokeStyle: 'rgba(0,0,0,0.1)',
@@ -18,8 +17,6 @@
             labels: {
                 disabled: true
             },
-            minValue: 0,
-            maxValue: 1.5
         });
 
         return {
@@ -56,7 +53,7 @@
                 socket.on($ctrl.eventName, function (data) {
 
                     $timeout(function () {
-                        // console.log(data)
+                        //
                         // $ctrl.amplitudes = data.amplitudes;
                         $ctrl.timeline = data.timeline;
                     });
@@ -69,12 +66,12 @@
 
                     lines.forEach(function (line, index) {
                         for (band in data.data) {
-                          console.log(band)
-                          data.data[band].forEach(function(amplitude){
-                            line.append(new Date().getTime(), amplitude);
+                            data.data[band].forEach(function(amplitude){
+                              line.append(new Date().getTime(), amplitude);
                           });
                         };
                     });
+                    console.log(lines)
 
                 });
 
