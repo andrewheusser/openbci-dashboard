@@ -105,6 +105,7 @@ var globalPowerNumber = 0;
 var globalPowerSeries = 0;
 var globalPowerWindow = 300;
 var globalPowerRate = 250 // 250 samples every 4ms equals 1 second
+var globalPowerTimeline = generateTimeline(300, 5, 's');
 var meanPowerByBand = {
   delta: [],
   theta: [],
@@ -222,7 +223,8 @@ function onSample (sample) {
       }
 
       io.emit('bci:power', {
-          data: globalPower
+          data: globalPower,
+          timeline: globalPowerTimeline
       });
 
       globalPowerNumber = 0;
