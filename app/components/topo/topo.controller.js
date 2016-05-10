@@ -121,14 +121,14 @@ angular.module('bciDashboard')
             //
             // topo.filters = [blurX, blurY];
 
-            mask = plot.add.graphics(150, 150);
-            mask.beginFill(0xffffff);
-            //
-            // //	Here we'll draw a circle
-            mask.drawCircle(75, 75, 400);
-            //
-            // //	And apply it to the Sprite
-            topoSprite.mask = mask;
+            // mask = plot.add.graphics(150, 150);
+            // mask.beginFill(0xffffff);
+            // //
+            // // //	Here we'll draw a circle
+            // mask.drawCircle(75, 75, 400);
+            // //
+            // // //	And apply it to the Sprite
+            // topoSprite.mask = mask;
         };
 
 });

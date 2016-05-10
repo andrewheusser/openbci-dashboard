@@ -9,16 +9,7 @@
   border: 3px solid black;
   border-radius: 50%;
   position: relative;
-}
-
-[class*='topoplot-c'] {
-  z-index: 2;
-  background-color: black;
-  border: 1px solid black;
-  width: 5%;
-  height: 5%;
-  border-radius: 50%;
-  position: absolute;
+  z-index: auto;
 }
 
 .top {
@@ -73,10 +64,6 @@
   -webkit-filter: blur(10px);
 }
 
-[class*='topoplot-u'] {
-  float: left;
-  /*border: 1px solid lightgray;*/
-  width: 9.09%;
-  height: 9.09%;
-  /*background: lightblue;*/
+.topoplot-blur {
+    /*-webkit-filter: blur(15px);*/
 }

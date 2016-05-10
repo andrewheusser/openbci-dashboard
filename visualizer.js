@@ -118,7 +118,7 @@ var hpFilterCoeffs = iirCalculator.highpass({
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
 });
-  
+
 var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
 
 var lpFilterCoeffs = iirCalculator.lowpass({
